@@ -56,8 +56,13 @@ class SystemNotification
 
   def self.users_since(time, filters = { })
     if SystemNotification.times.include?(time.to_sym)
-      members = Member.find(:all, :include => :user, :conditions => self.conditions(time, filters))
-      return members.collect(&:user).uniq
+      if filters[:projects]
+        members = Member.find(:all, :include => :user, :conditions => self.conditions(time, filters))
+        return members.collect(&:user).uniq
+      else
+        users = User.find(:all, :conditions => self.conditions(time, filters))
+        return users.uniq
+      end
     else
       return []
     end
