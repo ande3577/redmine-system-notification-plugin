@@ -1,4 +1,5 @@
 require 'redmine'
+require 'system_notifications_hooks'
 
 Redmine::Plugin.register :system_notification_plugin do
   name 'Redmine System Notification plugin'
@@ -12,5 +13,6 @@ Redmine::Plugin.register :system_notification_plugin do
   requires_redmine :version_or_higher => '0.8.0'
 
   
-  menu :admin_menu, :system_notification, { :controller => 'system_notification', :action => 'index'}, :caption => :system_notification
+  menu :admin_menu, :system_notification, { :controller => 'system_notification', :action => 'index'},
+  { :caption => :system_notification, :html => { :class => 'icon icon-system-notifications' } }
 end

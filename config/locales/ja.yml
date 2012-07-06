@@ -1,0 +1,12 @@
+ja:
+  system_notification: "システム通知機能"
+  field_time: "メンバの最終ログイン"
+  field_body: "メッセージ本文"
+  field_users: "メンバ"
+  button_send: "送信"
+  text_24_hours: "24時間前から"
+  text_1_week: "1週間前から"
+  text_1_month: "1ヶ月前から"
+  text_this_year: "今年"
+  text_all_time: "全期間"
+
