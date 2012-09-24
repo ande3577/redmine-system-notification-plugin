@@ -37,7 +37,7 @@ class SystemNotification
   
   def deliver
     if self.valid?
-      SystemNotificationMailer.deliver_system_notification(self)
+      SystemNotificationMailer.system_notification(self).deliver
       return true
     else
       return false
@@ -56,12 +56,14 @@ class SystemNotification
 
   def self.users_since(time, filters = { })
     if SystemNotification.times.include?(time.to_sym)
-      if filters[:projects]
-        members = Member.find(:all, :include => :user, :conditions => self.conditions(time, filters))
+      users = User.where(:status => User::STATUS_ACTIVE)
+      users = users.where("`last_login_on` > (?)", time_frame(time))  unless time.to_sym == :all
+      if filters[:projects] != "null" and !filters[:projects].nil?
+        members = Member.having("user_id IN (?)", users.pluck(:id))
+        members = members.where("project_id IN (?)", filters[:projects])
         return members.collect(&:user).uniq
       else
-        users = User.find(:all, :conditions => self.conditions(time, filters))
-        return users.uniq
+        return users
       end
     else
       return []
@@ -86,11 +88,11 @@ class SystemNotification
   end
 
   def self.conditions(time, filters = { })
-    c = ARCondition.new
-    c.add ["#{User.table_name}.status = ?", User::STATUS_ACTIVE]
-    c.add ["#{User.table_name}.last_login_on > (?)", time_frame(time)] unless time.to_sym == :all
-    c.add ["project_id IN (?)", filters[:projects]] if filters[:projects]
-    return c.conditions
+    c = [];
+    c.insert ["#{User.table_name}.status = ?", User::STATUS_ACTIVE]
+    c.insert ["#{User.table_name}.last_login_on > (?)", time_frame(time)] unless time.to_sym == :all
+    c.insert ["project_id IN (?)", filters[:projects]] if filters[:projects]
+    return c
   end
 
 end

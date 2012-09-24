@@ -25,13 +25,16 @@ class SystemNotificationController < ApplicationController
   end
   
   def users_since
-    if params[:system_notification] && params[:system_notification][:time] && !params[:system_notification][:time].empty?
-      @users = SystemNotification.users_since(params[:system_notification][:time],
+    if params[:time] && !params[:time].empty?
+      @users = SystemNotification.users_since(params[:time],
                                               {
-                                                :projects => params[:system_notification][:projects]
+                                                :projects => params[:projects]
                                               })
     end
     @users ||= []
+      
+    logger.info "Found:" + @users.length().to_s + " users."
+    
     respond_to do |format|
       format.html { redirect_to :action => 'index' }
       format.js { render :partial => 'users', :object => @users }

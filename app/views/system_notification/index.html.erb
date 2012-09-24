@@ -1,7 +1,6 @@
 <h1><%= l(:system_notification)%></h1>
 
-<% labelled_tabular_form_for :system_notification, @system_notification, {:url =>{:action => 'create'}, :html => {:id => 'system_notification'}} do |f|  %>
-
+<%= labelled_form_for :system_notification, @system_notification, {:url =>{:action => 'create'}, :html => {:id => 'system_notification'}} do |f|  %>
 <div class="box"> 
   <p>
     <%= f.select 'time', SystemNotification.times.invert.to_a.sort, :include_blank => true %>
@@ -24,16 +23,7 @@
 
 <% end -%>
 
-<%= observe_field 'system_notification_time',
-:url => { :action => :users_since },
-:update => :user_list,
-      :with => "$('system_notification').serialize()"
-      %>
-
-<%= observe_field 'system_notification_projects',
-:url => { :action => :users_since },
-:update => :user_list,
-      :with => "$('system_notification').serialize()"
-      %>
+<%= javascript_tag "observeSystemNotificationTime();" %>
+<%= javascript_tag "observeSystemNotificationProjectList();" %>
 
 <%= wikitoolbar_for 'system_notification_body' %>
