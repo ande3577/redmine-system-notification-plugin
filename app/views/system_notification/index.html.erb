@@ -8,6 +8,7 @@
   <p>
   	<label for='system_notification_projects'><%= l(:label_project_plural) %></label>
     <%= system_notification_project_select %>
+    <br><i><%= l(:text_select_none_for_all) %></i>
   </p>
   <p>
     <%= f.text_field 'subject', :size => 80 -%>
