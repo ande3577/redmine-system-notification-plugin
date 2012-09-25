@@ -1,7 +1,6 @@
 module SystemNotificationHelper
 
   def system_notification_project_select
-    "<label for='system_notification_projects'>#{l(:label_project_plural)}</label>"
     if self.respond_to?(:project_tree_options_for_select)
     
       select_tag('system_notification[projects][]',

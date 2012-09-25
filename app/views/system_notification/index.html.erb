@@ -6,6 +6,7 @@
     <%= f.select 'time', SystemNotification.times.invert.to_a.sort, :include_blank => true %>
   </p>
   <p>
+  	<label for='system_notification_projects'><%= l(:label_project_plural) %></label>
     <%= system_notification_project_select %>
   </p>
   <p>
