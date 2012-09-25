@@ -14,5 +14,5 @@ Redmine::Plugin.register :system_notification_plugin do
 
   
   menu :admin_menu, :system_notification, { :controller => 'system_notification', :action => 'index'},
-  { :caption => :system_notification, :html => { :class => 'icon icon-system-notifications' } }
+  { :caption => :system_notification}
 end
