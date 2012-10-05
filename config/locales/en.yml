@@ -10,3 +10,4 @@ en:
   text_this_year: "This year"
   text_all_time: "All"
   text_select_none_for_all: "Send to all users if no projects selected."
+  permission_use_system_notification: "Use system notification"
