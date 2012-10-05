@@ -36,8 +36,8 @@ class SystemNotificationController < ApplicationController
     logger.info "Found:" + @users.length().to_s + " users."
     
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
-      format.js { render :partial => 'users', :object => @users }
+      format.html { render :partial => 'users', :locals => { :users => @users } }
+      format.js { render :partial => 'users', :locals => { :users => @users } }
     end
   end
 end

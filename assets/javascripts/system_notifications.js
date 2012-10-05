@@ -2,6 +2,7 @@ function observeSystemNotificationTime() {
 	$("#system_notification_time").change(function() {
 		handleUsersList($(this).val(), $("select##system_notification_projects").val());
 	});
+	handleUsersList($("#system_notification_time").val(), $("select##system_notification_projects").val());
 }
 
 function observeSystemNotificationProjectList() {
@@ -16,6 +17,9 @@ function handleUsersList(time, projects) {
 			time: time,
 			projects: projects
 		},
+      success: function(data, textStatus, jqXHR) {
+    	  $('#user_list').html(data);
+        },
 		evalJSON: true
 	});
 }
