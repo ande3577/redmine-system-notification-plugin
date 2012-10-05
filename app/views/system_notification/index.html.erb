@@ -1,7 +1,7 @@
 <h1><%= l(:system_notification)%></h1>
 
 <%= labelled_form_for :system_notification, @system_notification, {:url =>{:action => 'create'}, :html => {:id => 'system_notification'}} do |f|  %>
-<div class="box"> 
+<div class="box tabular"> 
   <p>
     <%= f.select 'time', SystemNotification.times.invert.to_a.sort, :include_blank => true %>
   </p>
