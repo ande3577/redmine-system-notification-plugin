@@ -79,7 +79,7 @@ class SystemNotification
     when :week
       7.days.ago
     when :month
-      7.month.ago
+      1.month.ago
     when :this_year
       Time.parse('Jan 1 ' + Time.now.year.to_s)
     else
