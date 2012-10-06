@@ -93,4 +93,15 @@ class SystemNotificationController < ApplicationController
       format.js { render :partial => 'users', :locals => { :users => @users } }
     end
   end
+  
+  def preview
+    # page is nil when previewing a new page
+    if @project.nil? && !User.current.admin?
+      return render_403
+    elsif !User.current.admin? && !User.current.allowed_to?(:use_system_notification, @project, :global => false)
+      return render_403 
+    end
+    @text = params[:system_notification][:body]
+    render :partial => 'common/preview'
+  end
 end

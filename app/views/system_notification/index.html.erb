@@ -26,8 +26,10 @@
 
 </div>
 <%= submit_tag l(:button_send) -%> <input type="reset" value="<%= l(:button_clear) -%>" onclick="$('user_items').innerHTML = '';" />
-
+	<%= preview_link({:controller => 'system_notification', :action => 'preview', :project_id => @project }, 'system_notification_body') %></p>
 <% end -%>
+
+<div id="preview" class="wiki"></div>
 
 <%= javascript_tag "observeSystemNotificationTime();" %>
 <%= javascript_tag "observeSystemNotificationProjectList();" %>
