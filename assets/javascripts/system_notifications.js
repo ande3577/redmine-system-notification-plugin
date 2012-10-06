@@ -1,8 +1,8 @@
 function observeSystemNotificationTime() {
 	$("#system_notification_time").change(function() {
-		handleUsersList($(this).val(), $("select##system_notification_projects").val());
+		handleUsersList($(this).val(), $("#system_notification_projects").val());
 	});
-	handleUsersList($("#system_notification_time").val(), $("select##system_notification_projects").val());
+	handleUsersList($("#system_notification_time").val(), $("#system_notification_projects").val());
 }
 
 function observeSystemNotificationProjectList() {

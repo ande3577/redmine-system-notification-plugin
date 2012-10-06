@@ -7,15 +7,19 @@ module SystemNotificationHelper
       project_list = [@project]
     end
     
-    if self.respond_to?(:project_tree_options_for_select)
-    
-      select_tag('system_notification[projects][]',
-                       project_tree_options_for_select(project_list),
-                         :multiple => @project.nil?, :size => @project.nil? ? 10 : 1, :id => "system_notification_projects")
+    if !@project.nil?
+      hidden_field_tag 'system_notification_projects', [@project.id]
     else
-      select_tag('system_notification[projects][]',
-                      options_from_collection_for_select(project_list, :id, :name),
-                         :multiple => @project.nil?, :size => @project.nil? ? 10 : 1, :id => "system_notification_projects")
+      if self.respond_to?(:project_tree_options_for_select)
+      
+        select_tag('system_notification[projects][]',
+                         project_tree_options_for_select(project_list),
+                           :multiple => true, :size => 10, :id => "system_notification_projects")
+      else
+        select_tag('system_notification[projects][]',
+                        options_from_collection_for_select(project_list, :id, :name),
+                           :multiple => true, :size => 10, :id => "system_notification_projects")
+      end
     end
   end
 end
