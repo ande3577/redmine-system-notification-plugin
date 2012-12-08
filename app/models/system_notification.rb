@@ -4,6 +4,7 @@ class SystemNotification
   attr_accessor :body
   attr_accessor :users
   attr_accessor :errors
+  attr_accessor :roles
 
   if Redmine.const_defined?(:I18n)
     include Redmine::I18n
@@ -55,15 +56,39 @@ class SystemNotification
   end
 
   def self.users_since(time, filters = { })
+    Rails.logger.debug ":roles = #{filters[:roles]}"
+    
     if SystemNotification.times.include?(time.to_sym)
       users = User.where(:status => User::STATUS_ACTIVE)
       users = users.where("`last_login_on` > (?)", time_frame(time))  unless time.to_sym == :all
       if filters[:projects] != "null" and !filters[:projects].nil?
         members = Member.having("user_id IN (?)", users.pluck(:id))
         members = members.where("project_id IN (?)", filters[:projects])
-        return members.collect(&:user).uniq
+
+        if filters[:roles] != "null" and !filters[:roles].nil?
+          member_roles = MemberRole.having("member_id IN (?)", members.map(&:id))
+          member_roles = member_roles.where("role_id IN (?)", filters[:roles])
+          members = Member.where("id IN (?)", member_roles.pluck(:member_id)) 
+        end
+        
+        return members.collect(&:user).uniq 
       else
-        return users
+        if filters[:roles] != "null" and !filters[:roles].nil?
+          users_with_role = []
+          
+          users.each do |u|
+            projects_by_role = u.projects_by_role 
+              
+            filters[:roles].each do |r|
+              role = Role.find(r)
+              users_with_role << u unless projects_by_role.values_at(role).flatten.empty?
+            end
+          end
+          
+          return users_with_role.uniq
+        else
+          return users
+        end
       end
     else
       return []

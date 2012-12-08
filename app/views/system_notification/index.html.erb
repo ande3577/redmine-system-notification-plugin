@@ -15,6 +15,10 @@
   	<% end %>
   </p>
   <p>
+  	<%= select_tag 'system_notification[roles][]', options_from_collection_for_select(Role.find_all_givable, :id, :name), :multiple => true, :id => "system_notification_roles" %>
+  	<label for='system_notification_roles'><%= l(:label_role_plural) %></label>
+		<br><em><%= l(:text_select_none_for_all) %></em><br>
+  <p>
     <%= f.text_field 'subject', :size => 80 -%>
   </p>
   <p>
@@ -33,5 +37,6 @@
 
 <%= javascript_tag "observeSystemNotificationTime();" %>
 <%= javascript_tag "observeSystemNotificationProjectList();" %>
+<%= javascript_tag "observerSystemNotificationRolesList();" %>
 
 <%= wikitoolbar_for 'system_notification_body' %>
