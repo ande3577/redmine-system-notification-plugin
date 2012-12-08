@@ -12,7 +12,11 @@ class SystemNotificationController < ApplicationController
     logger.debug "params = #{params.inspect}"
     
     if @project.nil?
-      projects = params[:id].nil? ? [] : [ Project.where("identifier = ?", params[:id]).first ]   
+      projects = params[:id].nil? ? [] : Project.where(:identifier => params[:id])
+      if !params[:system_notification_projects].nil?
+        projects << Project.find(params[:system_notification_projects])        
+      end
+        
       @project = projects[0] unless projects.empty?
       
       if !params[:projects].nil? 
@@ -35,6 +39,7 @@ class SystemNotificationController < ApplicationController
       projects = [ @project ]
     end
     
+    logger.debug "@project = #{@project.inspect}"
     logger.debug "projects = #{projects.inspect}"
     
     if projects.empty?()
@@ -57,9 +62,12 @@ class SystemNotificationController < ApplicationController
   def create
     @system_notification = SystemNotification.new(params[:system_notification])
     if params[:system_notification][:time]
+      project_ids = @project.nil? ? params[:system_notification][:projects] : [@project.id]
+      
+      
       @system_notification.users = SystemNotification.users_since(params[:system_notification][:time],
                                                                   {
-                                                                    :projects => params[:system_notification][:projects]
+                                                                    :projects => project_ids
                                                                   })
     end
     if @system_notification.deliver

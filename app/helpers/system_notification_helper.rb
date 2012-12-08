@@ -1,15 +1,10 @@
 module SystemNotificationHelper
 
   def system_notification_project_select
-    if @project.nil?
-      project_list = Project.find(:all)
-    else
-      project_list = [@project]
-    end
-    
     if !@project.nil?
       hidden_field_tag 'system_notification_projects', [@project.id]
     else
+      project_list = Project.find(:all)
       if self.respond_to?(:project_tree_options_for_select)
       
         select_tag('system_notification[projects][]',
