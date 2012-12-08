@@ -2,7 +2,7 @@ module SystemNotificationHelper
 
   def system_notification_project_select
     if !@project.nil?
-      hidden_field_tag 'system_notification_projects', [@project.id]
+      hidden_field_tag 'system_notification[projects][]', [@project.id], :id => "system_notification_projects"
     else
       project_list = Project.find(:all)
       if self.respond_to?(:project_tree_options_for_select)

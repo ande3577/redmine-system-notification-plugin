@@ -13,9 +13,6 @@ class SystemNotificationController < ApplicationController
     
     if @project.nil?
       projects = params[:id].nil? ? [] : Project.where(:identifier => params[:id])
-      if !params[:system_notification_projects].nil?
-        projects << Project.find(params[:system_notification_projects])        
-      end
         
       @project = projects[0] unless projects.empty?
       
