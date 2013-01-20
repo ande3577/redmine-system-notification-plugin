@@ -1,5 +1,5 @@
 de:
-  system_notification: "System Benachrichtigungen"
+  system_notification: "Nachricht"
   field_time: Benutzer seit
   field_body: Nachricht
   field_users: Benutzer
@@ -9,3 +9,6 @@ de:
   text_1_month: "ein Monat"
   text_this_year: "dieses Jahr"
   text_all_time: "Alle"
+  text_select_none_for_all: "Bei keiner Selektion, an alle senden."
+  permission_use_system_notification: "Systemnachrichten versenden"
+  
