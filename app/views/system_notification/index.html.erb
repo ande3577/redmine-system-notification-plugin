@@ -19,6 +19,9 @@
   	<label for='system_notification_roles'><%= l(:label_role_plural) %></label>
 		<br><em><%= l(:text_select_none_for_all) %></em><br>
   <p>
+    <%= check_box_tag 'system_notification[cc_self][]', '1', true, :id => "system_notification_cc_self "%>
+    <label for='system_notification_cc_self'><%= l(:text_cc_self) %></label>
+  <p>
     <%= f.text_field 'subject', :size => 80 -%>
   </p>
   <p>

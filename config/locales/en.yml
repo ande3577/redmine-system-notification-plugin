@@ -11,3 +11,4 @@ en:
   text_all_time: "All"
   text_select_none_for_all: "Send to all if none selected."
   permission_use_system_notification: "Use system notification"
+  text_cc_self: "Copy Self"

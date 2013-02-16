@@ -63,6 +63,13 @@ class SystemNotificationController < ApplicationController
                                                                     :roles => params[:system_notification][:roles]
                                                                   })
     end
+    
+    if params[:system_notification][:cc_self]
+      User.current().pref[:no_self_notified] = false
+    else
+      User.current().pref[:no_self_notified] = true
+    end  
+    
     if @system_notification.deliver
       flash[:notice] = "System Notification was successfully sent."
       redirect_to_referer_or 
