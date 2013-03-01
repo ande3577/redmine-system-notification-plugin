@@ -10,11 +10,11 @@ class SystemNotificationController < ApplicationController
     end
     
     if @project.nil?
-      projects = params[:id].nil? ? [] : Project.where(:identifier => params[:id])
+      projects = (params[:id].nil? or params[:id].empty?) ? [] : Project.where(:identifier => params[:id])
         
       @project = projects[0] unless projects.empty?
       
-      if !params[:projects].nil? 
+      if !params[:projects].nil? and !params[:projects].empty?
         if params[:projects].kind_of?(Array)
           params[:projects].each do |p|
             projects << Project.find(p)
