@@ -1,0 +1,15 @@
+de:
+  system_notification: "Nachricht"
+  field_time: Benutzer seit
+  field_body: Nachricht
+  field_users: Benutzer
+  button_send: Absenden
+  text_24_hours: "24 Stunden"
+  text_1_week: "eine Woche"
+  text_1_month: "ein Monat"
+  text_this_year: "dieses Jahr"
+  text_all_time: "Alle"
+  text_select_none_for_all: "Bei keiner Selektion, an alle senden."
+  permission_use_system_notification: "Systemnachrichten versenden"
+  text_cc_self: "Kopie an mich"
+  
