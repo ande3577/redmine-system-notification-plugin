@@ -11,4 +11,5 @@ de:
   text_all_time: "Alle"
   text_select_none_for_all: "Bei keiner Selektion, an alle senden."
   permission_use_system_notification: "Systemnachrichten versenden"
+  text_cc_self: "Kopie an mich"
   
