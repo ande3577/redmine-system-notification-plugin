@@ -2,6 +2,13 @@
 
 <h1><%= l(:system_notification)%></h1>
 
+<% if @system_notification.errors.any? %>
+    <div id='errorExplanation'><ul>
+    <% @system_notification.errors.each do |error| %>
+      <li><%= h(error[0].to_s.titleize + " " + l(error[1].to_sym)) %></li>
+    <% end %>
+    </ul></div>
+<% end %>
 <%= labelled_form_for :system_notification, @system_notification, {:url =>{:action => 'create'}, :html => {:id => 'system_notification'}} do |f|  %>
 <div class="box tabular"> 
   <p>
@@ -22,17 +29,17 @@
     <%= check_box_tag 'system_notification[cc_self][]', '1', true, :id => "system_notification_cc_self "%>
     <label for='system_notification_cc_self'><%= l(:text_cc_self) %></label>
   <p>
-    <%= f.text_field 'subject', :size => 80 -%>
+    <%= f.text_field 'subject', :size => 80, :required => true -%>
   </p>
   <p>
-    <%= f.text_area 'body', :class => 'wiki-edit', :rows => 10  -%>
+    <%= f.text_area 'body', :class => 'wiki-edit', :rows => 10, :required => true  -%>
   </p>
   <p id="user_list">
     <%= render :partial => 'users', :object => @system_notification.users %>
   </p>
 
 </div>
-<%= submit_tag l(:button_send) -%> <input type="reset" value="<%= l(:button_clear) -%>" onclick="$('user_items').innerHTML = '';" />
+  <%= submit_tag l(:button_send) -%> <input type="reset" value="<%= l(:button_clear) -%>" onclick="$('user_items').innerHTML = '';" />
 	<%= preview_link({:controller => 'system_notification', :action => 'preview', :id => @project }, 'system_notification_body') %></p>
 <% end -%>
 

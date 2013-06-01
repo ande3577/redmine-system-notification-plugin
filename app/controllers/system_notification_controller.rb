@@ -1,7 +1,41 @@
 class SystemNotificationController < ApplicationController
   unloadable
   layout 'base'
-  before_filter :check_permissions
+  before_filter :find_optional_project, :check_permissions
+  
+  def find_optional_project
+    @project = Project.where(:identifier => params[:id]).first unless params[:id].nil?
+      
+    logger.info "@project = #{@project.inspect}"
+  
+    if @project.nil?
+      @project_ids = []
+        
+      if !params[:projects].nil? and !params[:projects].empty?
+        if params[:projects].kind_of?(Array)
+          params[:projects].each do |p|
+            @project_ids << p
+          end
+        elsif params[:projects] != "null"
+            @project_ids << params[:projects]
+        end
+      end
+      
+      if !params[:system_notification].nil? && !params[:system_notification][:projects].nil? && params[:system_notification][:projects].kind_of?(Array)
+            params[:system_notification][:projects].each do |p|
+              @project_ids << p
+            end
+      end
+      
+      @project_ids.each do |project_id|
+        return render_404 if Project.where(:id => project_id).empty?
+      end
+    else
+      @project_ids = [ @project.id ]
+    end
+    
+    logger.info "@projects = #{@project_ids.inspect}"
+  end
   
   def check_permissions
     unless User.current.logged?
@@ -9,38 +43,13 @@ class SystemNotificationController < ApplicationController
       return
     end
     
-    if @project.nil?
-      projects = (params[:id].nil? or params[:id].empty?) ? [] : Project.where(:identifier => params[:id])
-        
-      @project = projects[0] unless projects.empty?
-      
-      if !params[:projects].nil? and !params[:projects].empty?
-        if params[:projects].kind_of?(Array)
-          params[:projects].each do |p|
-            projects << Project.find(p)
-          end
-        elsif params[:projects] != "null"
-          projects << [Project.find(params[:projects])]
-        end
-      end
-      
-      if !params[:system_notification].nil? && !params[:system_notification][:projects].nil? && params[:system_notification][:projects].kind_of?(Array)
-            params[:system_notification][:projects].each do |p|
-              projects << Project.find(p)
-            end
-      end
-        
-    else
-      projects = [ @project ]
-    end
-    
-    if projects.empty?()
+    if @project_ids.empty?()
       unless User.current.admin
         deny_access
       end
     else
-      projects.each do |project|
-        if !User.current.admin? && !User.current.allowed_to?(:use_system_notification, project, :global => false)
+      @project_ids.each do |project_id|
+        if !User.current.admin? && !User.current.allowed_to?(:use_system_notification, Project.find(project_id), :global => false)
           deny_access
         end
       end
@@ -54,12 +63,9 @@ class SystemNotificationController < ApplicationController
   def create
     @system_notification = SystemNotification.new(params[:system_notification])
     if params[:system_notification][:time]
-      project_ids = @project.nil? ? params[:system_notification][:projects] : [@project.id]
-      
-      
       @system_notification.users = SystemNotification.users_since(params[:system_notification][:time],
                                                                   {
-                                                                    :projects => project_ids,
+                                                                    :projects => @project_ids,
                                                                     :roles => params[:system_notification][:roles]
                                                                   })
     end
@@ -72,24 +78,18 @@ class SystemNotificationController < ApplicationController
     
     if @system_notification.deliver
       flash[:notice] = "System Notification was successfully sent."
-      redirect_to_referer_or 
+      redirect_to  :action => :index, :id => @project.nil? ? nil : @project.identifier
     else
-      flash[:error] = "System Notification was not sent."
-      redirect_to_referer_or 
+      @system_notification.users = []
+      render :action => :index
     end
   end
   
   def users_since
-    if @project.nil?
-       project_ids = params[:projects]
-    else
-       project_ids = [@project.id]
-    end
-    
     if params[:time] && !params[:time].empty?
       @users = SystemNotification.users_since(params[:time],
                                               {
-                                                :projects => project_ids,
+                                                :projects => @project_ids,
                                                 :roles => params[:roles]
                                               })
     end
