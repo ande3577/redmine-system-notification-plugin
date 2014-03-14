@@ -62,11 +62,11 @@ class SystemNotification
       users = User.where(:status => User::STATUS_ACTIVE)
       users = users.where("`last_login_on` > (?)", time_frame(time))  unless time.to_sym == :all
       if filters[:projects] != "null" and !filters[:projects].nil? and !filters[:projects].empty?
-        members = Member.having("user_id IN (?)", users.pluck(:id))
+        members = Member.where("user_id IN (?)", users.pluck(:id))
         members = members.where("project_id IN (?)", filters[:projects])
 
         if filters[:roles] != "null" and !filters[:roles].nil? and !filters[:roles].empty?
-          member_roles = MemberRole.having("member_id IN (?)", members.map(&:id))
+          member_roles = MemberRole.where("member_id IN (?)", members.map(&:id))
           member_roles = member_roles.where("role_id IN (?)", filters[:roles])
           members = Member.where("id IN (?)", member_roles.pluck(:member_id)) 
         end
