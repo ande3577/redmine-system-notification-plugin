@@ -4,7 +4,7 @@ class SystemNotificationController < ApplicationController
   before_filter :find_optional_project, :check_permissions
   
   def find_optional_project
-    @project = Project.where(:identifier => params[:id]).first unless params[:id].nil?
+    @project = Project.find(params[:id]) unless params[:id].nil?
       
     logger.info "@project = #{@project.inspect}"
   
