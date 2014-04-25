@@ -1,0 +1,14 @@
+fr:
+  system_notification: "Notifications système"
+  field_time: Utilisateur depuis
+  field_body: Corps
+  field_users: Utilisateurs
+  button_send: Envoyer
+  text_24_hours: "24 heures"
+  text_1_week: "1 semaine"
+  text_1_month: "1 mois"
+  text_this_year: "Cette année"
+  text_all_time: "Toujours"
+  text_select_none_for_all: "Envoyer à tous si aucun n'est sélectionné."
+  permission_use_system_notification: "Utiliser les notifications système"
+  text_cc_self: "S'envoyer une copie"
