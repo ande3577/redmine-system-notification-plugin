@@ -60,7 +60,8 @@ class SystemNotification
     
     if SystemNotification.times.include?(time.to_sym)
       users = User.where(:status => User::STATUS_ACTIVE)
-      users = users.where("`last_login_on` > (?)", time_frame(time))  unless time.to_sym == :all
+      #accents (`last_login_on`) seemed to be an issue, they were removed
+      users = users.where("last_login_on > (?)", time_frame(time))  unless time.to_sym == :all
       if filters[:projects] != "null" and !filters[:projects].nil? and !filters[:projects].empty?
         members = Member.where("user_id IN (?)", users.pluck(:id))
         members = members.where("project_id IN (?)", filters[:projects])
