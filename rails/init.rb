@@ -2,9 +2,9 @@ require 'redmine'
 require 'system_notifications_hooks'
 
 Redmine::Plugin.register :system_notification_plugin do
-  name 'Redmine System Notification plugin'
+  name 'Redmine System Notification Plugin'
   author 'David S Anderson'
-  description 'The System Notification plugin allows Administrators to send systemwide email notifications to specific users.'
+  description 'The System Notification plugin allows Administrators to send system-wide email notifications to specific users.'
   url 'https://github.com/ande3577/redmine-system-notification-plugin'
   author_url 'https://github.com/ande3577'
 

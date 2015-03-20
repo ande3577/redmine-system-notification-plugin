@@ -1,5 +1,6 @@
 de:
   system_notification: "Nachricht"
+  project_module_system_notification: Nachricht
   field_time: Benutzer seit
   field_body: Nachricht
   field_users: Benutzer

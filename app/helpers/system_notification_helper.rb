@@ -6,7 +6,8 @@ module SystemNotificationHelper
       html << hidden_field_tag('id', @project.identifier)
       html << hidden_field_tag('system_notification[projects][]', [@project.id], :id => "system_notification_projects")
     else
-      project_list = Project.find(:all)
+      # replaced deprecated find(:all)
+      project_list = Project.all()
       if self.respond_to?(:project_tree_options_for_select)
       
         html << select_tag('system_notification[projects][]',
